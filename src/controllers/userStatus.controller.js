@@ -1,11 +1,12 @@
 import userStatusModel from '../models/userStatus.model.js';
+
 export const createUserStatus = async (req, res) => {
     try {
         await userStatusModel.sync();
          const dataUserStatus = req.body;
          const createUser = await userStatusModel.create({
             userStatus_name: dataUserStatus.status_name,
-            userStatus_descriptions: dataUserStatus.status_description,
+            userStatus_descriptions: dataUserStatus.status_descriptions,
          });
          res.status(201).json({
             ok: true,
@@ -67,13 +68,13 @@ export const updateUserStatus = async (req, res) => {
         const dataUserStatus = req.body;
         const updateUser = await userStatusModel.update({
             userStatus_name: dataUserStatus.status_name,
-            userStatus_description: dataUserStatus.status_description,
+            userStatus_descriptions: dataUserStatus.status_descriptions,
         },{
             where: {
                 userStatus_id: idStatus,
             }
         });
-        res.status(200).josn({
+        res.status(200).json({
             ok: true,
             status: 200,
             message: 'Update User Status',
