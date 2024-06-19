@@ -1,5 +1,5 @@
 
-import userModel from '..//models/user.model.js';
+import userModel from '../models/user.model.js';
 import { faker } from '@faker-js/faker';
 export const createUser = async (req, res) => {
     try {

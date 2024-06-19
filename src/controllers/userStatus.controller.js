@@ -5,7 +5,7 @@ export const createUserStatus = async (req, res) => {
          const dataUserStatus = req.body;
          const createUser = await userStatusModel.create({
             userStatus_name: dataUserStatus.status_name,
-            userStatus_description: dataUserStatus.status_description,
+            userStatus_descriptions: dataUserStatus.status_description,
          });
          res.status(201).json({
             ok: true,
