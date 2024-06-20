@@ -1,7 +1,7 @@
 import bcryptjs from 'bcryptjs';
-import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/user.model.js';
+import { faker } from '@faker-js/faker';
 
 
 export const createUser = async (req, res) => {
@@ -50,7 +50,7 @@ export const showUser = async (req, res) => {
     }
 };
 
-export const showUserId = async (req, res) => {
+export const showIdUser = async (req, res) => {
     try {
         const idUser = req.params.id;
         const user = await userModel.findOne({
@@ -75,11 +75,12 @@ export const showUserId = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         await userModel.sync();
-        const idUser = req.params.id;
+        const salt= await bcryptjs.genSalt(10);
         const dataUser = req.body;
-        const updateUser = await userModel.update({
-            user_user: dataUser.user_name,
-            user_password: dataUser.user_password,
+        const passwordHash=await bcryptjs.hash(dataUser.user_password,salt);
+        const createUser = await userModel.create({
+            user_user: dataUser.user_user,
+            user_password: passwordHash,
             userStatus_FK: dataUser.status,
             role_FK: dataUser.role,
         },{
@@ -179,6 +180,7 @@ export const loginUser = async (req, res) => {
             token:token
         });
     } catch (error) {
+
         return res.status(500).json({
             message: 'Something went wrong in the request',
             status: 500,
