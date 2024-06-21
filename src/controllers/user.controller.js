@@ -75,12 +75,16 @@ export const showIdUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         await userModel.sync();
-        const salt= await bcryptjs.genSalt(10);
+        const idUser = req.params.id;
         const dataUser = req.body;
-        const passwordHash=await bcryptjs.hash(dataUser.user_password,salt);
-        const createUser = await userModel.create({
+
+        if (dataUser.user_password) {
+            const salt = await bcryptjs.genSalt(10);
+            dataUser.user_password = await bcryptjs.hash(dataUser.user_password, salt);
+        }
+        const updateUser = await userModel.update({
             user_user: dataUser.user_user,
-            user_password: passwordHash,
+            user_password: dataUser.user_password,
             userStatus_FK: dataUser.status,
             role_FK: dataUser.role,
         },{
